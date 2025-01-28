@@ -141,68 +141,79 @@ def rfidRead():
 #Oled functions
 #Prints welcome message on the OLED
 def welcomeMessage():
-    image1 = Image.new("RGB", (oled.width, oled.height), "BLACK")
-    draw = ImageDraw.Draw(image1)
-    font = ImageFont.truetype('./lib/oled/Font.ttf', 10)
+    image = Image.new("RGB", (oled.width, oled.height), "GREEN")
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.truetype('.venv/lib/oled/Font.ttf', 12)
 
-    draw.text((0, 0), "Welcome!", font=font, fill=(255, 255, 255))
-    draw.text((0, 10), "Have a nice", font=font, fill=(255, 255, 255))
-    draw.text((0, 20), "stay!", font=font, fill=(255, 255, 255))
+    draw.text((20, 8), "Welcome!", font=font, fill=(255, 255, 255))
+    draw.text((16, 20), "Have a nice", font=font, fill=(255, 255, 255))
+    draw.text((34, 32), "stay!", font=font, fill=(255, 255, 255))
 
-    oled.ShowImage(image1, 0, 0)
+    oled.ShowImage(image, 0, 0)
 
 
 #Prints goodbye message on the OLED
 def goodbyeMessage():
-    image1 = Image.new("RGB", (oled.width, oled.height), "BLACK")
-    draw = ImageDraw.Draw(image1)
-    font = ImageFont.truetype('./lib/oled/Font.ttf', 10)
+    image = Image.new("RGB", (oled.width, oled.height), "GREEN")
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.truetype('.venv/lib/oled/Font.ttf', 12)
 
-    draw.text((0, 0), "Welcome!", font=font, fill=(255, 255, 255))
-    draw.text((0, 10), "Have a nice", font=font, fill=(255, 255, 255))
-    draw.text((0, 20), "stay!", font=font, fill=(255, 255, 255))
+    draw.text((15, 8), "Parking Paid", font=font, fill=(255, 255, 255))
+    draw.text((16, 20), "Have a nice", font=font, fill=(255, 255, 255))
+    draw.text((34, 32), "day!", font=font, fill=(255, 255, 255))
 
-    oled.ShowImage(image1, 0, 0)
+    oled.ShowImage(image, 0, 0)
 
 
 #Prints message to second entrance on the OLED
 def secondEntranceMessage():
-    image1 = Image.new("RGB", (oled.width, oled.height), "BLACK")
-    draw = ImageDraw.Draw(image1)
-    font = ImageFont.truetype('./lib/oled/Font.ttf', 10)
+    image = Image.new("RGB", (oled.width, oled.height), "YELLOW")
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.truetype('.venv/lib/oled/Font.ttf', 12)
 
-    draw.text((0, 0), "Welcome!", font=font, fill=(255, 255, 255))
-    draw.text((0, 10), "Have a nice", font=font, fill=(255, 255, 255))
-    draw.text((0, 20), "stay!", font=font, fill=(255, 255, 255))
+    draw.text((14, 8), "Car already", font=font, fill=(0, 0, 0))
+    draw.text((17, 20), "parked on", font=font, fill=(0, 0, 0))
+    draw.text((22, 32), "this card", font=font, fill=(0, 0, 0))
 
-    oled.ShowImage(image1, 0, 0)
+    oled.ShowImage(image, 0, 0)
 
 
 #Prints message to second exit on the OLED
 def secondExitMessage():
-    image1 = Image.new("RGB", (oled.width, oled.height), "BLACK")
-    draw = ImageDraw.Draw(image1)
-    font = ImageFont.truetype('./lib/oled/Font.ttf', 10)
+    image = Image.new("RGB", (oled.width, oled.height), "YELLOW")
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.truetype('.venv/lib/oled/Font.ttf', 12)
 
-    draw.text((0, 0), "Welcome!", font=font, fill=(255, 255, 255))
-    draw.text((0, 10), "Have a nice", font=font, fill=(255, 255, 255))
-    draw.text((0, 20), "stay!", font=font, fill=(255, 255, 255))
+    draw.text((24, 8), "No car", font=font, fill=(0, 0, 0))
+    draw.text((17, 20), "parked on", font=font, fill=(0, 0, 0))
+    draw.text((22, 32), "this card", font=font, fill=(0, 0, 0))
 
-    oled.ShowImage(image1, 0, 0)
+    oled.ShowImage(image, 0, 0)
 
 
 #Prints error message to the OLED
 def errorMessage():
-    image1 = Image.new("RGB", (oled.width, oled.height), "BLACK")
-    draw = ImageDraw.Draw(image1)
-    font = ImageFont.truetype('./lib/oled/Font.ttf', 10)
+    image = Image.new("RGB", (oled.width, oled.height), "RED")
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.truetype('.venv/lib/oled/Font.ttf', 10)
 
-    draw.text((0, 0), "Welcome!", font=font, fill=(255, 255, 255))
-    draw.text((0, 10), "Have a nice", font=font, fill=(255, 255, 255))
-    draw.text((0, 20), "stay!", font=font, fill=(255, 255, 255))
+    draw.text((26, 8), "ERROR!", font=font, fill=(0, 0, 0))
+    draw.text((0, 20), "Contact service", font=font, fill=(0, 0, 0))
+    draw.text((18, 32), "or try again", font=font, fill=(0, 0, 0))
 
-    oled.ShowImage(image1, 0, 0)
+    oled.ShowImage(image, 0, 0)
 
+#Prints the message on the OLED
+def paymentMessage():
+    image = Image.new("RGB", (oled.width, oled.height), "YELLOW")
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.truetype('.venv/lib/oled/Font.ttf', 12)
+
+    draw.text((10, 8), "Parking ticket", font=font, fill=(0, 0, 0))
+    draw.text((26, 20), "unpaid!", font=font, fill=(0, 0, 0))
+    draw.text((8, 32), "Go to counter!", font=font, fill=(0, 0, 0))
+
+    oled.ShowImage(image, 0, 0)
 
 #Setup
 def setup():
