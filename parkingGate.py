@@ -28,21 +28,66 @@ def sendToBroker(time, uid):
     global entrance
 
     if entrance:
-        client.publish(CONNECTION_CANAL, ENTRANCE_MESSAGE_1 + time + ENTRANCE_MESSAGE_2 + str(uid))
+        client.publish(GATE_TO_BASE_CANAL, ENTRANCE_MESSAGE_1 + time + ENTRANCE_MESSAGE_2 + str(uid))
     else:
-        client.publish(CONNECTION_CANAL, EXIT_MESSAGE_1 + time + EXIT_MESSAGE_2 + str(uid))
+        client.publish(GATE_TO_BASE_CANAL, EXIT_MESSAGE_1 + time + EXIT_MESSAGE_2 + str(uid))
 
 
 
 #Connects to the broker and sends a message with the current time
 def connectToBroker():
     client.connect(BROKER)
-    client.publish(CONNECTION_CANAL, CONNECTED_MESSAGE + datetime.now().strftime(DATETIME_FORMAT))
+    client.publish(GATE_TO_BASE_CANAL, CONNECTED_MESSAGE + datetime.now().strftime(DATETIME_FORMAT))
+
+    client.subscribe(BASE_TO_GATE_CANAL)
+    client.on_message = processMessage
 
 #Disconnects from the broker and sends a message with the current time
 def disconnectFromBroker():
-    client.publish(CONNECTION_CANAL, DISCONNECTED_MESSAGE + datetime.now().strftime(DATETIME_FORMAT))
+    client.publish(GATE_TO_BASE_CANAL, DISCONNECTED_MESSAGE + datetime.now().strftime(DATETIME_FORMAT))
     client.disconnect()
+
+#Processes the message from the broker
+def processMessage(client, userdata, message):
+    message_decoded = str(message.payload.decode("utf-8"))
+    print(message_decoded)
+
+    if (message_decoded == WELCOME_CODE):
+        welcomeMessage()
+        lightUp(True)
+        buzz(True)
+        lightDown()
+
+    elif (message_decoded == GOODBYE_CODE):
+        goodbyeMessage()
+        lightUp(True)
+        buzz(True)
+        lightDown()
+
+    elif (message_decoded == SECOND_ENTRY_CODE):
+        secondEntranceMessage()
+        lightUp(False)
+        buzz(False)
+        lightDown()
+
+    elif (message_decoded == SECOND_EXIT_CODE):
+        secondExitMessage()
+        lightUp(False)
+        buzz(False)
+        lightDown()
+
+    elif (message_decoded == ERROR_CODE):
+        errorMessage()
+        lightUp(False)
+        buzz(False)
+        lightDown()
+
+    elif (message_decoded == PAYMENT_CODE):
+        paymentMessage()
+        lightUp(False)
+        buzz(False)
+        lightDown()
+
 
 #Buttons functions
 #Red button - turns off the system
@@ -117,23 +162,6 @@ def rfidRead():
                         num += uid[i] << (i*8)
 
                     sendToBroker(timeStamp, num)
-
-                    lightUp(True)
-
-                    if entrance:
-                        welcomeMessage()
-                    else:
-                        goodbyeMessage()
-
-                    buzz(True)
-                    lightDown()
-
-                else:
-                    #errorMessage()
-
-                    lightUp(False)
-                    buzz(False)
-                    lightDown()
 
             debouncer = datetime.timestamp(datetime.now())
 
@@ -227,7 +255,9 @@ def setup():
 #Main
 def main():
     setup()
+    client.loop_start()
     rfidRead()
+    client.loop_stop()
     disconnectFromBroker()
     oled.clear()
     GPIO.cleanup()

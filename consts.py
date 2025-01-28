@@ -1,5 +1,6 @@
 #Mqtt connection constants
-CONNECTION_CANAL = "parking/entrace"
+GATE_TO_BASE_CANAL = "parking/formgate"
+BASE_TO_GATE_CANAL = "parking/tobase"
 BROKER = "localhost"
 
 
@@ -13,6 +14,12 @@ ENTRANCE_MESSAGE_2 = "Card read UID: "
 EXIT_MESSAGE_1 = "Car exited at: "
 EXIT_MESSAGE_2 = "; Card read UID: "
 
+WELCOME_CODE = "1"
+GOODBYE_CODE = "2"
+SECOND_ENTRY_CODE = "3"
+SECOND_EXIT_CODE = "4"
+ERROR_CODE = "5"
+PAYMENT_CODE = "6"
 
 #Time constants
 DATETIME_FORMAT = "%d-%m-%Y %H:%M:%S"

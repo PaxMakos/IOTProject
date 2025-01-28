@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+import random
 
 broker = "localhost"
 client = mqtt.Client()
@@ -18,7 +19,12 @@ def disconnectFromBroker():
 
 def processMessage(client, userdata, message):
     message_decoded = str(message.payload.decode("utf-8"))
-    print(f"Message received: {message_decoded}")
+
+    if len(message_decoded) > 1:
+        print(message_decoded)
+        option = random.randint(1, 6)
+
+        client.publish("parking/info", str(option))
 
 
 def run_receiver():
