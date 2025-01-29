@@ -1,10 +1,11 @@
 import threading
-from parkingGate import main as gate_main
+from parkingGate import main as gate_main, client
 from testReceiver import run_receiver
 from datetime import datetime
 import tkinter as tk
 from tkinter import messagebox
 import json
+from consts import *
 
 # Plik do przechowywania danych o parkowaniu
 PARKING_DATA_FILE = "parking_data.json"
@@ -28,13 +29,16 @@ def handle_card_read(uid, entrance):
     if entrance:
         if str(uid) in parking_data:
             messagebox.showerror("Błąd", "Karta już zarejestrowana.")
+            client.publish(BASE_TO_GATE_CANAL, SECOND_ENTRY_CODE)
         else:
             parking_data[str(uid)] = {"entry_time": time_stamp}
             save_parking_data(parking_data)
             messagebox.showinfo("Sukces", f"Karta {uid} zarejestrowana przy wjeździe o {time_stamp}.")
+            client.publish(BASE_TO_GATE_CANAL, WELCOME_CODE)
     else:
         if str(uid) not in parking_data:
             messagebox.showerror("Błąd", "Karta nieznaleziona.")
+            client.publish(BASE_TO_GATE_CANAL, SECOND_EXIT_CODE)
         else:
             entry_time = datetime.strptime(parking_data[str(uid)]['entry_time'], "%Y-%m-%d %H:%M:%S")
             exit_time = datetime.now()
@@ -44,12 +48,15 @@ def handle_card_read(uid, entrance):
                 messagebox.showinfo("Czas postoju", f"Czas postoju: {duration:.2f} minut. Karta {uid}. Pierwsza godzina jest darmowa.")
                 del parking_data[str(uid)]
                 save_parking_data(parking_data)
+                client.publish(BASE_TO_GATE_CANAL, GOODBYE_CODE)
             else:
                 if not messagebox.askyesno("Wyjazd", f"Czas postoju: {duration:.2f} minut. Do zapłaty: {payment:.2f} zł. Czy zapłacono?"):
                     messagebox.showinfo("Zapłać",f"Aby wyjechać musisz zapłacić: {payment:.2f} zł.")
+                    client.publish(BASE_TO_GATE_CANAL, PAYMENT_CODE)
                 else:
                     del parking_data[str(uid)]
                     save_parking_data(parking_data)
+                    client.publish(BASE_TO_GATE_CANAL, GOODBYE_CODE)
                 #messagebox.showinfo("Wyjazd", f"Czas postoju: {duration:.2f} minut. Do zapłaty: {payment:.2f} zł. Aby zapłacić kliknij Ok")
             #del parking_data[str(uid)]
             #save_parking_data(parking_data)
