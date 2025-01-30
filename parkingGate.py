@@ -171,7 +171,7 @@ def rfidRead():
 def welcomeMessage():
     image = Image.new("RGB", (oled.width, oled.height), "GREEN")
     draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype('.venv/lib/oled/Font.ttf', 12)
+    font = ImageFont.truetype('.t/ests/lib/oled/Font.ttf', 12)
 
     draw.text((20, 8), "Welcome!", font=font, fill=(255, 255, 255))
     draw.text((16, 20), "Have a nice", font=font, fill=(255, 255, 255))
@@ -184,7 +184,7 @@ def welcomeMessage():
 def goodbyeMessage():
     image = Image.new("RGB", (oled.width, oled.height), "GREEN")
     draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype('.venv/lib/oled/Font.ttf', 12)
+    font = ImageFont.truetype('./tests/lib/oled/Font.ttf', 12)
 
     draw.text((15, 8), "Parking Paid", font=font, fill=(255, 255, 255))
     draw.text((16, 20), "Have a nice", font=font, fill=(255, 255, 255))
@@ -197,7 +197,7 @@ def goodbyeMessage():
 def secondEntranceMessage():
     image = Image.new("RGB", (oled.width, oled.height), "YELLOW")
     draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype('.venv/lib/oled/Font.ttf', 12)
+    font = ImageFont.truetype('./tests/lib/oled/Font.ttf', 12)
 
     draw.text((14, 8), "Car already", font=font, fill=(0, 0, 0))
     draw.text((17, 20), "parked on", font=font, fill=(0, 0, 0))
@@ -210,7 +210,7 @@ def secondEntranceMessage():
 def secondExitMessage():
     image = Image.new("RGB", (oled.width, oled.height), "YELLOW")
     draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype('.venv/lib/oled/Font.ttf', 12)
+    font = ImageFont.truetype('./tests/lib/oled/Font.ttf', 12)
 
     draw.text((24, 8), "No car", font=font, fill=(0, 0, 0))
     draw.text((17, 20), "parked on", font=font, fill=(0, 0, 0))
@@ -223,7 +223,7 @@ def secondExitMessage():
 def errorMessage():
     image = Image.new("RGB", (oled.width, oled.height), "RED")
     draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype('.venv/lib/oled/Font.ttf', 10)
+    font = ImageFont.truetype('./tests/lib/oled/Font.ttf', 10)
 
     draw.text((26, 8), "ERROR!", font=font, fill=(0, 0, 0))
     draw.text((0, 20), "Contact service", font=font, fill=(0, 0, 0))
@@ -235,7 +235,7 @@ def errorMessage():
 def paymentMessage():
     image = Image.new("RGB", (oled.width, oled.height), "YELLOW")
     draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype('.venv/lib/oled/Font.ttf', 12)
+    font = ImageFont.truetype('./tests/lib/oled/Font.ttf', 12)
 
     draw.text((10, 8), "Parking ticket", font=font, fill=(0, 0, 0))
     draw.text((26, 20), "unpaid!", font=font, fill=(0, 0, 0))

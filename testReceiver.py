@@ -1,5 +1,6 @@
 import paho.mqtt.client as mqtt
 import random
+from consts import *
 
 broker = "localhost"
 client = mqtt.Client()
@@ -7,7 +8,7 @@ client = mqtt.Client()
 def connectToBroker():
     client.connect(broker)
     client.on_message = processMessage
-    client.subscribe("parking/entrace")
+    client.subscribe(GATE_TO_BASE_CANAL)
     while client.loop() == 0:
         pass
 
@@ -24,7 +25,7 @@ def processMessage(client, userdata, message):
         print(message_decoded)
         option = random.randint(1, 6)
 
-        client.publish("parking/info", str(option))
+        client.publish(BASE_TO_GATE_CANAL, str(option))
 
 
 def run_receiver():
