@@ -60,31 +60,36 @@ def handle_card_read(uid, entrance):
 
     if entrance:
         if str(uid) in parking_data:
-            messagebox.showerror("Błąd", "Karta już zarejestrowana.")
             client.publish(BASE_TO_GATE_CANAL, SECOND_ENTRY_CODE)
+            messagebox.showerror("Błąd", "Karta już zarejestrowana.")
+            
         else:
             parking_data[str(uid)] = {"entry_time": time_stamp}
             save_parking_data(parking_data)
-            messagebox.showinfo("Sukces", f"Karta {uid} zarejestrowana przy wjeździe o {time_stamp}.")
             client.publish(BASE_TO_GATE_CANAL, WELCOME_CODE)
+            messagebox.showinfo("Sukces", f"Karta {uid} zarejestrowana przy wjeździe o {time_stamp}.")
+            
     else:
         if str(uid) not in parking_data:
-            messagebox.showerror("Błąd", "Karta nieznaleziona.")
             client.publish(BASE_TO_GATE_CANAL, SECOND_EXIT_CODE)
+            messagebox.showerror("Błąd", "Karta nieznaleziona.")
+            
         else:
             entry_time = datetime.strptime(parking_data[str(uid)]['entry_time'], "%Y-%m-%d %H:%M:%S")
             exit_time = datetime.now()
             duration = (exit_time - entry_time).total_seconds() / 60
             payment = round((duration - 60) * 0.5, 2)
             if duration <= 60:  # Pierwsza godzina darmowa
+                client.publish(BASE_TO_GATE_CANAL, GOODBYE_CODE)
                 messagebox.showinfo("Czas postoju", f"Czas postoju: {duration:.2f} minut. Karta {uid}. Pierwsza godzina jest darmowa.")
                 del parking_data[str(uid)]
                 save_parking_data(parking_data)
-                client.publish(BASE_TO_GATE_CANAL, GOODBYE_CODE)
+                
             else:
                 if not messagebox.askyesno("Wyjazd", f"Czas postoju: {duration:.2f} minut. Do zapłaty: {payment:.2f} zł. Czy zapłacono?"):
-                    messagebox.showinfo("Zapłać",f"Aby wyjechać musisz zapłacić: {payment:.2f} zł.")
                     client.publish(BASE_TO_GATE_CANAL, PAYMENT_CODE)
+                    messagebox.showinfo("Zapłać",f"Aby wyjechać musisz zapłacić: {payment:.2f} zł.")
+                    
                 else:
                     del parking_data[str(uid)]
                     save_parking_data(parking_data)
