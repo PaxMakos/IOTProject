@@ -1,6 +1,8 @@
+from operator import truediv
 import paho.mqtt.client as mqtt
 import random
 from consts import *
+from main2 import handle_card_read
 
 broker = "localhost"
 client = mqtt.Client()
@@ -21,12 +23,14 @@ def disconnectFromBroker():
 def processMessage(client, userdata, message):
     message_decoded = str(message.payload.decode("utf-8"))
 
-    if len(message_decoded) > 1:
-        print(message_decoded)
-        option = random.randint(1, 6)
+    message_parsed = message_decoded.split(":")
+    entrance = True
 
-        client.publish(BASE_TO_GATE_CANAL, str(option))
+    if message_parsed.__contains__(EXIT_MESSAGE_1):
+        entrance = False
 
+    handle_card_read(message_parsed[-1], entrance)
+    
 
 def run_receiver():
     connectToBroker()
@@ -35,3 +39,4 @@ def run_receiver():
 
 if __name__ == '__main__':
     run_receiver()
+    
