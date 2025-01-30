@@ -1,14 +1,46 @@
-import threading
-from parkingGate import main as gate_main, client
-from testReceiver import run_receiver
+import paho.mqtt.client as mqtt
 from datetime import datetime
 import tkinter as tk
 from tkinter import messagebox
 import json
 from consts import *
+import threading
 
 # Plik do przechowywania danych o parkowaniu
 PARKING_DATA_FILE = "parking_data.json"
+
+broker = "localhost"
+client = mqtt.Client()
+
+def connectToBroker():
+    client.connect(broker)
+    client.on_message = processMessage
+    client.subscribe(GATE_TO_BASE_CANAL)
+    while client.loop() == 0:
+        pass
+
+
+def disconnectFromBroker():
+    client.loop_stop()
+    client.disconnect()
+
+
+def processMessage(client, userdata, message):
+    message_decoded = str(message.payload.decode("utf-8"))
+
+    message_parsed = message_decoded.split(":")
+    entrance = True
+
+    if message_parsed.__contains__(EXIT_MESSAGE_1):
+        entrance = False
+
+    handle_card_read(message_parsed[-1], entrance)
+
+
+
+def run_receiver():
+    connectToBroker()
+    disconnectFromBroker()
 
 # Funkcje pomocnicze
 def load_parking_data():
@@ -70,9 +102,6 @@ def create_gui():
     tk.Label(root, text="System parkingowy uruchomiony.", font=("Arial", 14)).pack(pady=20)
     root.mainloop()
 
-# Uruchomienie bramki parkingowej w osobnym wątku
-def start_parking_gate():
-    gate_main()
 
 # Uruchomienie odbiornika w osobnym wątku
 def start_receiver():
@@ -81,10 +110,8 @@ def start_receiver():
 # Funkcja główna
 if __name__ == "__main__":
     # Wątki dla niezależnego działania funkcji
-    gate_thread = threading.Thread(target=start_parking_gate, daemon=True)
     receiver_thread = threading.Thread(target=start_receiver, daemon=True)
 
-    gate_thread.start()
     receiver_thread.start()
 
     #handle_card_read("dsdsad", True)

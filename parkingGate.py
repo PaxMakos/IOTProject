@@ -89,6 +89,7 @@ def processMessage(client, userdata, message):
         lightDown()
 
     time.sleep(3)
+    oled.clear()
 
 
 #Buttons functions
@@ -173,7 +174,7 @@ def rfidRead():
 def welcomeMessage():
     image = Image.new("RGB", (oled.width, oled.height), "GREEN")
     draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype('.t/ests/lib/oled/Font.ttf', 12)
+    font = ImageFont.truetype('./tests/lib/oled/Font.ttf', 12)
 
     draw.text((20, 8), "Welcome!", font=font, fill=(255, 255, 255))
     draw.text((16, 20), "Have a nice", font=font, fill=(255, 255, 255))
