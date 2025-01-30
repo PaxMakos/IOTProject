@@ -52,27 +52,28 @@ def processMessage(client, userdata, message):
     message_decoded = str(message.payload.decode("utf-8"))
 
     light = False
-    match message_decoded:
-        case str(WELCOME_CODE):
-            welcomeMessage()
-            light = True
-        case str(GOODBYE_CODE):
-            goodbyeMessage()
-            light = True
-        case str(SECOND_ENTRY_CODE):
-            secondEntranceMessage()
-        case str(SECOND_EXIT_CODE):
-            secondExitMessage()
-        case str(ERROR_CODE):
-            errorMessage()
-        case str(PAYMENT_CODE):
-            paymentMessage()
-        case _:
-            pass
+    if (message_decoded == WELCOME_CODE):
+        welcomeMessage()
+        light = True
+
+    elif (message_decoded == GOODBYE_CODE):
+        goodbyeMessage()
+        light = True
+
+    elif (message_decoded == SECOND_ENTRY_CODE):
+        secondEntranceMessage()
+
+    elif (message_decoded == SECOND_EXIT_CODE):
+        secondExitMessage()
+
+    elif (message_decoded == ERROR_CODE):
+        errorMessage()
+
+    elif (message_decoded == PAYMENT_CODE):
+        paymentMessage()
 
     lightUp(light)
     buzz(light)
-    lightDown()
 
     time.sleep(3)
     oled.clear()
