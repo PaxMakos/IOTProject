@@ -50,7 +50,6 @@ def disconnectFromBroker():
 #Processes the message from the broker
 def processMessage(client, userdata, message):
     message_decoded = str(message.payload.decode("utf-8"))
-    print(message_decoded)
 
     if (message_decoded == WELCOME_CODE):
         welcomeMessage()

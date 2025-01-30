@@ -83,8 +83,8 @@ def handle_card_read(uid, entrance):
             entry_time = datetime.strptime(parking_data[str(uid)]['entry_time'], "%Y-%m-%d %H:%M:%S")
             exit_time = datetime.now()
             duration = (exit_time - entry_time).total_seconds() / 60
-            payment = round((duration - 60) * 0.5, 2)
-            if duration <= 60:  # Pierwsza godzina darmowa
+            payment = round((duration - 1) * 0.5, 2)
+            if duration <= 1:  # Pierwsza godzina darmowa
                 client.publish(BASE_TO_GATE_CANAL, GOODBYE_CODE)
                 client.loop_write()
                 messagebox.showinfo("Czas postoju", f"Czas postoju: {duration:.2f} minut. Karta {uid}. Pierwsza godzina jest darmowa.")
