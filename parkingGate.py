@@ -88,6 +88,8 @@ def processMessage(client, userdata, message):
         buzz(False)
         lightDown()
 
+    time.sleep(3)
+
 
 #Buttons functions
 #Red button - turns off the system
