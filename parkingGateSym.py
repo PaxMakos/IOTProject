@@ -1,25 +1,20 @@
-#from tests.config import *
+"""
+Test gate
+
+Used only to test communication 
+"""
 from consts import *
 
 import time
 from datetime import datetime
 from PIL import Image, ImageDraw, ImageFont
 
-#from mfrc522 import MFRC522
-#import neopixel
-#import board
 import paho.mqtt.client as mqtt
-#import RPi.GPIO as GPIO
-#import tests.lib.oled.SSD1331 as SSD1331
 
-#globals
-#pixels = neopixel.NeoPixel(board.D18, 8, brightness=1.0/32, auto_write=False)
-#RFID = MFRC522()
 execute = True
 entrance = True
 client = mqtt.Client()
-#oled = SSD1331.SSD1331()
-#oled.Init()
+
 width = 96
 height = 64
 

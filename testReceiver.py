@@ -1,8 +1,14 @@
+"""
+Test receiver
+
+Used for testing communication
+"""
+
 from operator import truediv
 import paho.mqtt.client as mqtt
 import random
 from consts import *
-from main2 import handle_card_read
+from main import handle_card_read
 
 broker = "localhost"
 client = mqtt.Client()
